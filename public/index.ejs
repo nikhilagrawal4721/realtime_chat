@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+			integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+		<title>ChatCord App</title>
+	</head>
+
+	<body>
+		<div class="join-container">
+
+			<header class="join-header">
+				<h1><i class="fas fa-smile"></i> RealChat</h1>
+			</header>
+
+			<main class="join-main">
+
+				<form action="/join" method="post" id="joinform">
+
+					<div class="form-control">
+						<label for="username">Username</label>
+						<input
+							type="text"
+							name="username"
+							id="username"
+							placeholder="Enter username..."
+							required
+						/>
+					</div>
+
+					<div class="form-control" id="divjoinroom">
+						<label for="room">Room</label>
+						<select name="room" id="room-list">
+						</select>
+					</div>
+
+					<div class="form-control">
+						<label for="password">Enter Password</label>
+						<input
+							type="password"
+							name="password"
+							class="password"
+							placeholder="Enter password..."
+							/>
+						</div>
+						
+						<div style="color:red"><%=msg%></div>
+
+					<button type="submit" class="btn">Join Chat</button>
+					<div id="or">OR</div>
+				</form>
+
+				<form action="/create" id="createform" method="post">
+
+					<div class="form-control">
+						<label for="username">Username</label>
+						<input
+							type="text"
+							name="username"
+							id="username"
+							placeholder="Enter username..."
+							required
+						/>
+					</div>
+
+					<div class="form-control" id="divcreateroom">
+						<label for="createroom">Create Room</label>
+						<input
+							type="text"
+							name="room"
+							id="room"
+							placeholder="Enter room name..."
+							required
+						/>
+					</div>
+
+					<div class="form-control">
+						<label for="password">Create Password</label>
+						<input
+							type="password"
+							name="password"
+							class="password"
+							placeholder="Enter password..."
+						/>
+					</div>
+
+
+					<button type="submit" class="btn">Join Chat</button>
+					<div id="or">OR</div>
+				</form>
+				
+				<button onclick="showhidecreateroom()" class="btn" id="createbutton">Create room</button>
+				<button onclick="showhidejoinroom()" class="btn" id="joinroombutton">Join Room</button>
+			</main>
+
+		</div>
+
+	</body>
+
+	<script>
+		function showhidecreateroom()
+		{
+			document.getElementById("createform").style.display = "block";
+			document.getElementById("joinform").style.display = "none";
+			document.getElementById("joinroombutton").style.display = "block";
+			document.getElementById("createbutton").style.display = "none";
+		}
+		function showhidejoinroom()
+		{
+			document.getElementById("createform").style.display = "none";
+			document.getElementById("joinform").style.display = "block";
+			document.getElementById("joinroombutton").style.display = "none";
+			document.getElementById("createbutton").style.display = "block";
+		}
+	</script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		const socket = io();
+
+		socket.on('roomList' , rooms => {
+			document.getElementById('room-list').innerHTML = ``;
+
+			rooms.forEach(element => {
+				document.getElementById('room-list').innerHTML += `<option value="${element.room}">${element.room}</option>`;
+			});
+		});
+	</script>
+
+</html>
